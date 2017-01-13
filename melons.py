@@ -1,4 +1,17 @@
 from random import randint
+from datetime import datetime
+# datetime.now() gives current local date and time, datetime.weekday() gives day of the week
+# as an integer, where Monday is 0 and Sunday is 6
+
+order_time = raw_input("Would you like to place your order now or later?: ")
+
+if order_time == "now":
+    order_time = datetime.now()
+
+# Add else order later, add code to determine later date/time and surge
+
+print order_time
+
 
 """This file should have our order classes in it."""
 class AbstractMelonOrder(object):
