@@ -1,13 +1,13 @@
 """This file should have our order classes in it."""
 class AbstractMelonOrder(object):
-    def __init__(self, species, qty, tax):
+    def __init__(self, species, qty):
         """Initialize melon order attributes"""
 
         self.species = species
         self.qty = qty
         self.shipped = False
         self.order_type = None
-        self.tax = tax
+        self.tax = 0
 
     def get_total(self):
         """Calculate price."""
@@ -24,25 +24,40 @@ class AbstractMelonOrder(object):
         """Set shipped to true."""
         self.shipped = True
 
+class GovernmentMelonOrder(AbstractMelonOrder):
+    tax = 0
+    passed_inspection = False
+
+    def __init__(self, species, qty):
+        super(GovernmentMelonOrder, self).__init__(species, qty)
+
+    def mark_inspection(self, passed):
+        if passed == True:
+            self.passed_inspection = True
 
 class DomesticMelonOrder(AbstractMelonOrder):
     """A domestic (in the US) melon order."""
 
+    order_type = "domestic"
+    tax = 0.08
 
-    def __init__(self, species, qty, tax):
-        super(DomesticMelonOrder, self).__init__(species, qty, tax)
-        self.order_type = "domestic"
+    def __init__(self, species, qty):
+        super(DomesticMelonOrder, self).__init__(species, qty)
+        # self.order_type = "domestic"
 
 
 class InternationalMelonOrder(AbstractMelonOrder):
     """An international (non-US) melon order."""
 
-    def __init__(self, species, qty, tax, country_code):
-        super(InternationalMelonOrder, self).__init__(species, qty, tax)
-        """Initialize melon order attributes"""
+    order_type = "international"
+    tax = 0.17
 
+    def __init__(self, species, qty, country_code):
+        super(InternationalMelonOrder, self).__init__(species, qty)
+        """Initialize melon order attributes"""
+        
         self.country_code = country_code
-        self.order_type = "international"
+        
     
     def get_total(self):
         return super(InternationalMelonOrder, self).get_total() + 3 * (self.qty < 10)
